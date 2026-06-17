@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Outfit Picker</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#0d0d0d;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    color:white;
+}
+
+.phone{
+    width:100%;
+    max-width:430px;
+    aspect-ratio:9/16;
+    background:linear-gradient(180deg,#0d0d0d,#1a1026);
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+}
+
+.screen{
+    flex:1;
+    display:none;
+    flex-direction:column;
+    justify-content:space-between;
+}
+
+.screen.active{
+    display:flex;
+}
+
+.pack-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:12px;
+    margin-top:20px;
+}
+
+.style-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-top:40px;
+}
+
+.card{
+    border:2px solid #7b2fff;
+    border-radius:16px;
+    background:#151515;
+    height:90px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    transition:.3s;
+    text-align:center;
+    padding:10px;
+}
+
+.card.selected{
+    background:#7b2fff;
+    color:white;
+}
+
+.btn{
+    width:100%;
+    border:none;
+    background:white;
+    color:black;
+    padding:16px;
+    border-radius:14px;
+    font-size:18px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.result{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    gap:20px;
+    flex:1;
+    text-align:center;
+}
+
+.summary{
+    font-size:20px;
+    line-height:1.5;
+}
+
+.check{
+    font-size:90px;
+    color:#7b2fff;
+    display:none;
+}
+
+.ok-btn{
+    background:#7b2fff;
+    color:white;
+}
+</style>
+</head>
+<body>
+
+<div class="phone">
+
+    <!-- SCREEN 1 -->
+    <div class="screen active" id="screen1">
+        <div class="pack-grid">
+            <div class="card pack">Пачка 1</div>
+            <div class="card pack">Пачка 2</div>
+            <div class="card pack">Пачка 3</div>
+            <div class="card pack">Пачка 4</div>
+        </div>
+
+        <button class="btn" onclick="nextScreen(2)">NEXT</button>
+    </div>
+
+    <!-- SCREEN 2 -->
+    <div class="screen" id="screen2">
+        <div class="style-grid">
+            <div class="card style">Спортивний</div>
+            <div class="card style">Класичний</div>
+            <div class="card style">Casual</div>
+            <div class="card style">Streetwear</div>
+        </div>
+
+        <button class="btn" onclick="showResult()">NEXT</button>
+    </div>
+
+    <!-- SCREEN 3 -->
+    <div class="screen" id="screen3">
+        <div class="result">
+            <div class="summary" id="summary"></div>
+
+            <button class="btn ok-btn" onclick="confirmSelection()">OK</button>
+
+            <div class="check" id="check">✓</div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+let selectedPack = '';
+let selectedStyle = '';
+
+document.querySelectorAll('.pack').forEach(item=>{
+    item.addEventListener('click',()=>{
+        document.querySelectorAll('.pack').forEach(el=>el.classList.remove('selected'));
+        item.classList.add('selected');
+        selectedPack = item.textContent;
+    });
+});
+
+document.querySelectorAll('.style').forEach(item=>{
+    item.addEventListener('click',()=>{
+        document.querySelectorAll('.style').forEach(el=>el.classList.remove('selected'));
+        item.classList.add('selected');
+        selectedStyle = item.textContent;
+    });
+});
+
+function nextScreen(id){
+    document.querySelectorAll('.screen').forEach(el=>el.classList.remove('active'));
+    document.getElementById('screen'+id).classList.add('active');
+}
+
+function showResult(){
+    document.getElementById('summary').innerHTML =
+    ${selectedPack}<br>${selectedStyle};
+
+    nextScreen(3);
+}
+
+function confirmSelection(){
+    document.getElementById('check').style.display='block';
+}
+</script>
+
+</body>
+</html>
